@@ -1,0 +1,159 @@
+#LIBRARY MANAGEMENT SYSTEM
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Book {
+public:
+    int id;
+    string title;
+    string author;
+    bool issued;
+
+    Book(int i, string t, string a) {
+        id = i;
+        title = t;
+        author = a;
+        issued = false;
+    }
+};
+
+vector<Book> library;
+
+void addBook() {
+    int id;
+    string title, author;
+
+    cout << "\nEnter Book ID: ";
+    cin >> id;
+    cin.ignore();
+
+    cout << "Enter Book Title: ";
+    getline(cin, title);
+
+    cout << "Enter Author Name: ";
+    getline(cin, author);
+
+    library.push_back(Book(id, title, author));
+    cout << "Book Added Successfully!\n";
+}
+
+void displayBooks() {
+    if (library.empty()) {
+        cout << "\nNo books available.\n";
+        return;
+    }
+
+    cout << "\nLibrary Books:\n";
+    cout << "-----------------------------------------\n";
+
+    for (auto &book : library) {
+        cout << "ID: " << book.id
+             << "\nTitle: " << book.title
+             << "\nAuthor: " << book.author
+             << "\nStatus: " << (book.issued ? "Issued" : "Available")
+             << "\n-----------------------------------------\n";
+    }
+}
+
+void issueBook() {
+    int id;
+    cout << "\nEnter Book ID to Issue: ";
+    cin >> id;
+
+    for (auto &book : library) {
+        if (book.id == id) {
+            if (!book.issued) {
+                book.issued = true;
+                cout << "Book Issued Successfully!\n";
+            } else {
+                cout << "Book is already issued.\n";
+            }
+            return;
+        }
+    }
+
+    cout << "Book not found.\n";
+}
+
+void returnBook() {
+    int id;
+    cout << "\nEnter Book ID to Return: ";
+    cin >> id;
+
+    for (auto &book : library) {
+        if (book.id == id) {
+            if (book.issued) {
+                book.issued = false;
+                cout << "Book Returned Successfully!\n";
+            } else {
+                cout << "Book was not issued.\n";
+            }
+            return;
+        }
+    }
+
+    cout << "Book not found.\n";
+}
+
+void searchBook() {
+    int id;
+    cout << "\nEnter Book ID to Search: ";
+    cin >> id;
+
+    for (auto &book : library) {
+        if (book.id == id) {
+            cout << "\nBook Found!\n";
+            cout << "Title: " << book.title << endl;
+            cout << "Author: " << book.author << endl;
+            cout << "Status: "
+                 << (book.issued ? "Issued" : "Available") << endl;
+            return;
+        }
+    }
+
+    cout << "Book not found.\n";
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== LIBRARY MANAGEMENT SYSTEM =====\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display Books\n";
+        cout << "3. Issue Book\n";
+        cout << "4. Return Book\n";
+        cout << "5. Search Book\n";
+        cout << "6. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                addBook();
+                break;
+            case 2:
+                displayBooks();
+                break;
+            case 3:
+                issueBook();
+                break;
+            case 4:
+                returnBook();
+                break;
+            case 5:
+                searchBook();
+                break;
+            case 6:
+                cout << "Thank You!\n";
+                break;
+            default:
+                cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
